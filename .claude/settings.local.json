@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(dont execute any thing more, just keep proper plans and setup project)",
+      "Bash(cd \"C:/Users/Prajjval Jaiswal/Desktop/manish/backend\" && node -e \"const {default: R} = require\\('redlock'\\); console.log\\(Object.getOwnPropertyNames\\(R.prototype\\)\\)\")",
+      "Bash(cd \"C:/Users/Prajjval Jaiswal/Desktop/manish/backend\" && node -e \"require\\('./src/app'\\); console.log\\('App loaded OK'\\)\" 2>&1)",
+      "Bash(cd \"C:/Users/Prajjval Jaiswal/Desktop/manish/backend\" && timeout 5 node -e \"require\\('./src/app'\\); console.log\\('App loaded OK'\\)\" 2>&1; echo \"exit: $?\")"
+    ]
+  }
+}

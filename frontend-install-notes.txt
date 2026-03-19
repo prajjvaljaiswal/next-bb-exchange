@@ -1,0 +1,2 @@
+Run in this directory:
+npm install socket.io-client
