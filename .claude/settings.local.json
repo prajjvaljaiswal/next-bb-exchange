@@ -1,10 +1,33 @@
 {
   "permissions": {
     "allow": [
-      "Bash(dont execute any thing more, just keep proper plans and setup project)",
-      "Bash(cd \"C:/Users/Prajjval Jaiswal/Desktop/manish/backend\" && node -e \"const {default: R} = require\\('redlock'\\); console.log\\(Object.getOwnPropertyNames\\(R.prototype\\)\\)\")",
-      "Bash(cd \"C:/Users/Prajjval Jaiswal/Desktop/manish/backend\" && node -e \"require\\('./src/app'\\); console.log\\('App loaded OK'\\)\" 2>&1)",
-      "Bash(cd \"C:/Users/Prajjval Jaiswal/Desktop/manish/backend\" && timeout 5 node -e \"require\\('./src/app'\\); console.log\\('App loaded OK'\\)\" 2>&1; echo \"exit: $?\")"
+      "Read(../../arch_plan_raw.txt)",
+      "Read(../../plans/**)",
+      "Read(../../BASE_CONTEXT.md)",
+      "Read(../../PROJECT_CONTEXT.md)",
+      "Read(../../PORTAL_CAPABILITIES.md)",
+      "Read(../../SYNC_RULES.md)",
+      "Read(../../SESSION_LOG.md)",
+      "Read(../../API_CONTRACTS.md)",
+      "Read(../../WS_PROTOCOL.md)",
+      "Read(../../SCHEMA_STATE.md)",
+      "Read(../../backend/**)",
+      "Write(../../UI_STATE.md)",
+      "Write(../../PROJECT_CONTEXT.md)",
+      "Write(../../PORTAL_CAPABILITIES.md)",
+      "Write(../../SESSION_LOG.md)"
+    ],
+    "rules": [
+      "Read BASE_CONTEXT.md + PROJECT_CONTEXT.md at the start of every session",
+      "Read API_CONTRACTS.md before calling any backend endpoint",
+      "Read WS_PROTOCOL.md before wiring any Socket.IO event",
+      "Check UNIMPLEMENTED tags in WS_PROTOCOL.md before subscribing to new events",
+      "Update UI_STATE.md when any context, hook, or component state shape changes",
+      "Update PORTAL_CAPABILITIES.md frontend column when feature status changes",
+      "Append to PROJECT_CONTEXT.md file change log after every change",
+      "Append to SESSION_LOG.md before ending every session",
+      "Never modify backend source files",
+      "Never store access token in localStorage or sessionStorage"
     ]
   }
 }
