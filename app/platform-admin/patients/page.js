@@ -9,7 +9,7 @@ import BloodTag from "@/components/ui/BloodTag";
 const STATUS_COLOR = { PENDING_PAYMENT: "warning", ACTIVE: "success", FULFILLED: "info", EXPIRED: "danger" };
 
 export default function AdminPatientsPage() {
-  const { accessToken } = useAuth();
+  const { accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -36,7 +36,11 @@ export default function AdminPatientsPage() {
     }
   }, [accessToken, page, search, filterStatus]);
 
-  useEffect(() => { fetchPatients(); }, [fetchPatients]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken) { setLoading(false); return; }
+    fetchPatients();
+  }, [fetchPatients, authLoading, accessToken]);
 
   return (
     <>

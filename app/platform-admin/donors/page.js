@@ -6,7 +6,7 @@ import { useToast } from "@/hooks/useToast";
 import BloodTag from "@/components/ui/BloodTag";
 
 export default function AdminDonorsPage() {
-  const { accessToken } = useAuth();
+  const { accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const [donors, setDonors] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -33,7 +33,11 @@ export default function AdminDonorsPage() {
     }
   }, [accessToken, page, search, filterGroup]);
 
-  useEffect(() => { fetchDonors(); }, [fetchDonors]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken) { setLoading(false); return; }
+    fetchDonors();
+  }, [fetchDonors, authLoading, accessToken]);
 
   return (
     <>

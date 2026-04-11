@@ -10,7 +10,7 @@ import CertCard from "@/components/ui/CertCard";
 import Link from "next/link";
 
 export default function DonorDashboard() {
-  const { user, accessToken } = useAuth();
+  const { user, accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -29,7 +29,11 @@ export default function DonorDashboard() {
     }
   }, [donorId, accessToken]);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken || !donorId) { setLoading(false); return; }
+    fetchData();
+  }, [fetchData, authLoading, accessToken, donorId]);
 
   const latestCard = cards[0];
   const totalDonations = cards.length;

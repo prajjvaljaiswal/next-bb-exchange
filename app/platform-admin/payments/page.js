@@ -17,7 +17,7 @@ const TYPE_LABEL = {
 const STATUS_COLOR = { CREATED: "warning", CAPTURED: "success", REFUNDED: "info", FAILED: "danger" };
 
 export default function AdminPaymentsPage() {
-  const { accessToken } = useAuth();
+  const { accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const [payments, setPayments] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -46,7 +46,11 @@ export default function AdminPaymentsPage() {
     }
   }, [accessToken, page, filterType, filterStatus]);
 
-  useEffect(() => { fetchPayments(); }, [fetchPayments]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken) { setLoading(false); return; }
+    fetchPayments();
+  }, [fetchPayments, authLoading, accessToken]);
 
   async function handleRefund(paymentId) {
     setRefunding(true);

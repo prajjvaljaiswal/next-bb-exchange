@@ -7,7 +7,7 @@ import { useSocketContext } from "@/context/SocketContext";
 import StatCard from "@/components/ui/StatCard";
 
 export default function PlatformAdminDashboard() {
-  const { accessToken } = useAuth();
+  const { accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const { socket } = useSocketContext();
   const [kpis, setKpis] = useState(null);
@@ -26,7 +26,11 @@ export default function PlatformAdminDashboard() {
     }
   }, [accessToken]);
 
-  useEffect(() => { fetchKpis(); }, [fetchKpis]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken) { setLoading(false); return; }
+    fetchKpis();
+  }, [fetchKpis, authLoading, accessToken]);
 
   // Real-time activity feed
   useEffect(() => {

@@ -8,7 +8,7 @@ import Badge from "@/components/ui/Badge";
 const STATUS_COLOR = { true: "success", false: "danger" };
 
 export default function BloodBanksPage() {
-  const { accessToken } = useAuth();
+  const { accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const [banks, setBanks] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,9 +28,13 @@ export default function BloodBanksPage() {
     } finally {
       setLoading(false);
     }
-  }, [accessToken, filterState, filterApproved]);
+  }, [accessToken, filterState, filterApproved, toast]);
 
-  useEffect(() => { fetchBanks(); }, [fetchBanks]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken) { setLoading(false); return; }
+    fetchBanks();
+  }, [fetchBanks, authLoading, accessToken]);
 
   async function approve(bankId) {
     try {

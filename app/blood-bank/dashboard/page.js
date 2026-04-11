@@ -10,7 +10,7 @@ import Badge from "@/components/ui/Badge";
 import Link from "next/link";
 
 export default function BloodBankDashboard() {
-  const { user, accessToken } = useAuth();
+  const { user, accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const { socket } = useSocketContext();
   const [kpis, setKpis] = useState(null);
@@ -43,7 +43,11 @@ export default function BloodBankDashboard() {
     }
   }, [bankId, accessToken]);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken || !bankId) { setLoading(false); return; }
+    fetchData();
+  }, [fetchData, authLoading, accessToken, bankId]);
 
   useEffect(() => {
     if (!socket || !bankId) return;

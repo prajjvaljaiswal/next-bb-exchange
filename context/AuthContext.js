@@ -1,5 +1,5 @@
 "use client";
-import { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { createContext, useContext, useState, useEffect, useCallback, useRef } from "react";
 import { apiPost, apiGet } from "@/lib/api";
 
 const AuthContext = createContext(null);
@@ -8,6 +8,7 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);       // { id, email, role, isEmailVerified, bloodBankId }
   const [accessToken, setAccessToken] = useState(null);
   const [loading, setLoading] = useState(true);
+  const refreshInFlight = useRef(false);
 
   // Silent refresh on mount
   useEffect(() => {
@@ -15,6 +16,9 @@ export function AuthProvider({ children }) {
   }, []);
 
   const silentRefresh = useCallback(async () => {
+    // Guard against concurrent calls (React StrictMode runs effects twice in dev)
+    if (refreshInFlight.current) return;
+    refreshInFlight.current = true;
     try {
       const data = await apiPost("/auth/refresh", {}, { skipAuth: true });
       setAccessToken(data.accessToken);
@@ -28,6 +32,7 @@ export function AuthProvider({ children }) {
       setAccessToken(null);
     } finally {
       setLoading(false);
+      refreshInFlight.current = false;
     }
   }, []);
 

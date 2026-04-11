@@ -17,7 +17,7 @@ const STATUS_DESC = {
 };
 
 export default function PatientDashboard() {
-  const { user, accessToken } = useAuth();
+  const { user, accessToken, loading: authLoading } = useAuth();
   const toast = useToast();
   const [patient, setPatient] = useState(null);
   const [recommendations, setRecommendations] = useState([]);
@@ -41,7 +41,11 @@ export default function PatientDashboard() {
     }
   }, [patientId, accessToken]);
 
-  useEffect(() => { fetchData(); }, [fetchData]);
+  useEffect(() => {
+    if (authLoading) return;
+    if (!accessToken || !patientId) { setLoading(false); return; }
+    fetchData();
+  }, [fetchData, authLoading, accessToken, patientId]);
 
   if (loading) {
     return <div style={{ padding: 40, textAlign: "center", color: "var(--color-ink-muted)" }}>Loading...</div>;

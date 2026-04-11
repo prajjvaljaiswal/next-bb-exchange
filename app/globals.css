@@ -323,7 +323,13 @@ body {
 .data-table td {
   padding: 12px;
   font-size: 14px;
+  color: var(--color-ink);
   border-bottom: 1px solid var(--color-border);
+}
+/* Override dark-theme cascade inside white panels */
+.panel .data-table td,
+.platform-shell.dark-theme .panel .data-table td {
+  color: var(--color-ink);
 }
 .data-table tr:hover td { background: var(--color-bg); }
 
