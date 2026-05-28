@@ -5,9 +5,9 @@ import Topbar from "@/components/ui/Topbar";
 const NAV = [
   {
     items: [
-      { href: "/donor/dashboard", icon: "📊", label: "Dashboard" },
-      { href: "/donor/donor-cards", icon: "🪪", label: "My Donor Cards" },
-      { href: "/donor/patients", icon: "👤", label: "Find Patient" },
+      { href: "/donor/dashboard",    icon: "dashboard", label: "Dashboard" },
+      { href: "/donor/donor-cards",  icon: "id-card",   label: "My Donor Cards" },
+      { href: "/donor/patients",     icon: "search",    label: "Find Patient" },
     ],
   },
 ];

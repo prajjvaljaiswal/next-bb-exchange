@@ -31,6 +31,22 @@ export default function DonorCardsPage() {
 
   useEffect(() => { fetchCards(); }, [fetchCards]);
 
+  function cardProps(card) {
+    return {
+      donorCardId: card.donorCardDisplayId,
+      donorName: card.donorName,
+      donorDisplayId: card.donorLink?.donor?.donorDisplayId || `D-${(card.donorLink?.donorId || "").slice(0, 8).toUpperCase()}`,
+      bloodGroup: card.bloodGroup,
+      bloodUnitNo: card.bloodUnitNo,
+      dateOfCollection: card.dateOfCollection,
+      bloodBankName: card.bloodBankName || card.bloodBank?.name,
+      bloodBankRegNo: card.bloodBank?.registrationNo,
+      authoritySignature: card.bloodBankAuthoritySignature,
+      organisationOfDrive: card.organisationOfDrive,
+      status: card.status,
+    };
+  }
+
   return (
     <>
       <div style={{ marginBottom: 24 }}>
@@ -48,39 +64,37 @@ export default function DonorCardsPage() {
         </div>
       ) : (
         <>
-          {/* Card grid */}
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(300px, 1fr))", gap: 20, marginBottom: 24 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: 20, marginBottom: 24 }}>
             {cards.map(card => (
-              <div key={card.id} onClick={() => setSelectedCard(card === selectedCard ? null : card)} style={{ cursor: "pointer", transition: "transform 0.15s", transform: selectedCard?.id === card.id ? "scale(1.02)" : "scale(1)" }}>
-                <CertCard
-                  donorName={card.donorName}
-                  bloodGroup={card.bloodGroup}
-                  donorCardId={card.donorCardDisplayId}
-                  unitNo={card.bloodUnitNo}
-                  dateOfCollection={card.dateOfCollection}
-                  bloodBankName={card.bloodBankName}
-                  status={card.status}
-                />
+              <div
+                key={card.id}
+                onClick={() => setSelectedCard(card === selectedCard ? null : card)}
+                style={{ cursor: "pointer", transition: "transform 0.15s", transform: selectedCard?.id === card.id ? "scale(1.02)" : "scale(1)" }}
+              >
+                <CertCard {...cardProps(card)} />
               </div>
             ))}
           </div>
 
-          {/* Selected card detail */}
           {selectedCard && (
             <div className="panel" style={{ padding: 20 }}>
               <h3 style={{ margin: "0 0 14px", fontSize: 15, fontWeight: 700 }}>Card Details</h3>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(160px, 1fr))", gap: 16 }}>
                 {[
                   { label: "Card ID", value: selectedCard.donorCardDisplayId, mono: true },
-                  { label: "Blood Unit No", value: selectedCard.bloodUnitNo, mono: true },
+                  { label: "Donor ID", value: selectedCard.donorLink?.donor?.donorDisplayId || `D-${(selectedCard.donorLink?.donorId || "").slice(0, 8).toUpperCase()}`, mono: true },
+                  { label: "Blood Unit No.", value: selectedCard.bloodUnitNo, mono: true },
                   { label: "Blood Group", value: selectedCard.bloodGroup },
-                  { label: "Collection Date", value: new Date(selectedCard.dateOfCollection).toLocaleDateString("en-IN") },
-                  { label: "Blood Bank", value: selectedCard.bloodBankName },
+                  { label: "Date of Collection", value: new Date(selectedCard.dateOfCollection).toLocaleDateString("en-IN") },
+                  { label: "Blood Bank", value: selectedCard.bloodBankName || selectedCard.bloodBank?.name },
+                  { label: "Blood Bank ID", value: selectedCard.bloodBank?.registrationNo, mono: true },
+                  { label: "Authority Signature", value: selectedCard.bloodBankAuthoritySignature || "—" },
+                  { label: "Organisation of Drive", value: selectedCard.organisationOfDrive || "—" },
                   { label: "Status", value: selectedCard.status },
                 ].map(f => (
                   <div key={f.label}>
                     <div style={{ fontSize: 11, color: "var(--color-ink-muted)", textTransform: "uppercase", letterSpacing: "0.05em", marginBottom: 2 }}>{f.label}</div>
-                    <div style={{ fontWeight: 700, fontFamily: f.mono ? "var(--font-mono)" : undefined, fontSize: 13 }}>{f.value}</div>
+                    <div style={{ fontWeight: 700, fontFamily: f.mono ? "var(--font-mono)" : undefined, fontSize: 13 }}>{f.value || "—"}</div>
                   </div>
                 ))}
               </div>

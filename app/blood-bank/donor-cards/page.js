@@ -115,13 +115,18 @@ export default function DonorCardsPage() {
       </div>
 
       {selectedCard && (
-        <Modal open={!!selectedCard} onClose={() => setSelectedCard(null)} title="Donor Card" width={480}>
+        <Modal open={!!selectedCard} onClose={() => setSelectedCard(null)} title="Donor Card" width={500}>
           <CertCard
-            donorName={selectedCard.donorName}
-            bloodGroup={selectedCard.bloodGroup}
             donorCardId={selectedCard.donorCardDisplayId}
+            donorName={selectedCard.donorName}
+            donorDisplayId={selectedCard.donorLink?.donor?.donorDisplayId || `D-${(selectedCard.donorLink?.donorId || "").slice(0, 8).toUpperCase()}`}
+            bloodGroup={selectedCard.bloodGroup}
+            bloodUnitNo={selectedCard.bloodUnitNo}
             dateOfCollection={selectedCard.dateOfCollection}
             bloodBankName={selectedCard.bloodBankName}
+            bloodBankRegNo={selectedCard.bloodBank?.registrationNo}
+            authoritySignature={selectedCard.bloodBankAuthoritySignature}
+            organisationOfDrive={selectedCard.organisationOfDrive}
             status={selectedCard.status}
           />
         </Modal>

@@ -13,9 +13,9 @@ export default function DonorRegisterPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [form, setForm] = useState({
-    name: "", age: "", sex: "Male", mobile: "", email: "",
+    name: "", age: "", sex: "Male", nationality: "Indian", mobile: "", email: "",
     weight: "", bloodGroup: "O+", address: "", state: "", pincode: "",
-    bankAccountName: "", bankAccountIFSC: "", bankAccountUPI: "",
+    bankAccountName: "", bankAccountNo: "", bankAccountIFSC: "", bankAccountUPI: "",
     password: "", confirmPassword: "",
   });
 
@@ -65,6 +65,7 @@ export default function DonorRegisterPage() {
         name: form.name,
         age: parseInt(form.age),
         sex: form.sex,
+        nationality: form.nationality || "Indian",
         mobile: form.mobile,
         email: form.email,
         weight: parseFloat(form.weight),
@@ -73,6 +74,7 @@ export default function DonorRegisterPage() {
         state: form.state,
         pincode: form.pincode,
         bankAccountName: form.bankAccountName || undefined,
+        bankAccountNo: form.bankAccountNo || undefined,
         bankAccountIFSC: form.bankAccountIFSC || undefined,
         bankAccountUPI: form.bankAccountUPI || undefined,
         password: form.password,
@@ -140,6 +142,10 @@ export default function DonorRegisterPage() {
                 </div>
               </div>
               <div>
+                <label className="form-label">Nationality</label>
+                <input className="form-input" value={form.nationality} onChange={e => set("nationality", e.target.value)} placeholder="Indian" />
+              </div>
+              <div>
                 <label className="form-label">Mobile Number *</label>
                 <input className="form-input" value={form.mobile} onChange={e => set("mobile", e.target.value)} placeholder="10-digit mobile" maxLength={10} />
               </div>
@@ -186,8 +192,12 @@ export default function DonorRegisterPage() {
                 <strong>Bank Account (Optional)</strong> — Required to receive cycle refunds (₹400)
               </div>
               <div>
-                <label className="form-label">Account Holder Name</label>
+                <label className="form-label">Name of Bank</label>
                 <input className="form-input" value={form.bankAccountName} onChange={e => set("bankAccountName", e.target.value)} placeholder="As per bank records" />
+              </div>
+              <div>
+                <label className="form-label">Account No.</label>
+                <input className="form-input" value={form.bankAccountNo} onChange={e => set("bankAccountNo", e.target.value)} placeholder="Bank account number" />
               </div>
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
                 <div>

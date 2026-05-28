@@ -23,6 +23,8 @@ export default function NewDonationPage() {
   const [searching, setSearching] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [cycleResult, setCycleResult] = useState(null);
+  const [donationType, setDonationType] = useState("VOLUNTARY");
+  const [remarks, setRemarks] = useState("");
 
   const bankId = user?.bloodBankId;
 
@@ -62,6 +64,8 @@ export default function NewDonationPage() {
         donorId: selectedDonor.id,
         patientId: selectedPatient.id,
         bloodBankId: bankId,
+        donationType,
+        remarks: remarks.trim() || undefined,
       }, { token: accessToken });
       setCycleResult(result);
       toast.success(result.cycleDetected ? "Donation logged — cycle detected!" : "Donation logged successfully");
@@ -94,7 +98,7 @@ export default function NewDonationPage() {
           )}
           <div style={{ display: "flex", gap: 12, justifyContent: "center", marginTop: 24 }}>
             <button className="btn btn-ghost" onClick={() => router.push("/blood-bank/donations")}>View All Donations</button>
-            <button className="btn btn-primary" onClick={() => { setCycleResult(null); setStep(0); setSelectedDonor(null); setSelectedPatient(null); setDonorQuery(""); setDonorResults([]); }}>Log Another</button>
+            <button className="btn btn-primary" onClick={() => { setCycleResult(null); setStep(0); setSelectedDonor(null); setSelectedPatient(null); setDonorQuery(""); setDonorResults([]); setDonationType("VOLUNTARY"); setRemarks(""); }}>Log Another</button>
           </div>
         </div>
       </div>
@@ -231,6 +235,30 @@ export default function NewDonationPage() {
               <div style={{ fontSize: 13, marginTop: 4 }}><BloodTag group={selectedPatient?.bloodGroup} /></div>
               <div style={{ fontSize: 12, color: "var(--color-ink-muted)", marginTop: 4 }}>{selectedPatient?.hospitalName}</div>
             </div>
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <div style={{ fontSize: 13, fontWeight: 700, marginBottom: 10 }}>Type of Donation</div>
+            <div style={{ display: "flex", gap: 12 }}>
+              {["VOLUNTARY", "REPLACEMENT"].map(type => (
+                <label key={type} style={{ display: "flex", alignItems: "center", gap: 8, cursor: "pointer", padding: "10px 20px", border: `2px solid ${donationType === type ? "var(--color-blood)" : "var(--color-border)"}`, borderRadius: 8, fontWeight: donationType === type ? 700 : 400, background: donationType === type ? "var(--color-danger-bg, #fff5f5)" : "transparent", fontSize: 14 }}>
+                  <input type="radio" name="donationType" value={type} checked={donationType === type} onChange={() => setDonationType(type)} style={{ accentColor: "var(--color-blood)" }} />
+                  {type === "VOLUNTARY" ? "Voluntary" : "Replacement"}
+                </label>
+              ))}
+            </div>
+          </div>
+
+          <div style={{ marginBottom: 20 }}>
+            <label className="form-label" style={{ display: "block", marginBottom: 6 }}>Remarks (optional)</label>
+            <textarea
+              className="form-input"
+              placeholder="Any remarks for this donation..."
+              value={remarks}
+              onChange={e => setRemarks(e.target.value)}
+              rows={3}
+              style={{ resize: "vertical", width: "100%" }}
+            />
           </div>
 
           <div style={{ background: "var(--color-danger-bg, #fff5f5)", border: "1px solid var(--color-danger)", borderRadius: 8, padding: 14, marginBottom: 20, fontSize: 13 }}>

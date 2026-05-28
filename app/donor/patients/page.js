@@ -104,15 +104,21 @@ export default function DonorPatientsPage() {
               <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, fontSize: 13, marginBottom: 16 }}>
                 <div>
                   <div style={{ fontSize: 11, color: "var(--color-ink-muted)" }}>Hospital</div>
-                  <div style={{ fontWeight: 600 }}>{p.hospitalName}</div>
-                </div>
-                <div>
-                  <div style={{ fontSize: 11, color: "var(--color-ink-muted)" }}>Doctor</div>
-                  <div style={{ fontWeight: 600 }}>{p.doctorName}</div>
+                  <div style={{ fontWeight: 600 }}>{p.hospitalName}{p.hospitalType ? ` (${p.hospitalType === "GOVERNMENT" ? "Govt" : "Pvt"})` : ""}</div>
                 </div>
                 <div>
                   <div style={{ fontSize: 11, color: "var(--color-ink-muted)" }}>Units Needed</div>
                   <div style={{ fontWeight: 600 }}>{p.unitsRequired}</div>
+                </div>
+                <div style={{ gridColumn: "span 2" }}>
+                  <div style={{ fontSize: 11, color: "var(--color-ink-muted)" }}>Address / Location</div>
+                  <div style={{ fontWeight: 600 }}>
+                    {[p.district, p.state].filter(Boolean).join(", ") || p.registeredBloodBank?.city || "—"}
+                  </div>
+                </div>
+                <div>
+                  <div style={{ fontSize: 11, color: "var(--color-ink-muted)" }}>Contact No.</div>
+                  <div style={{ fontWeight: 600 }}>{p.mobile || "—"}</div>
                 </div>
                 <div>
                   <div style={{ fontSize: 11, color: "var(--color-ink-muted)" }}>Condition</div>

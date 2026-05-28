@@ -5,8 +5,8 @@ import Topbar from "@/components/ui/Topbar";
 const NAV = [
   {
     items: [
-      { href: "/patient/dashboard", icon: "📊", label: "Dashboard" },
-      { href: "/patient/status", icon: "🔍", label: "Blood Status" },
+      { href: "/patient/dashboard", icon: "dashboard", label: "Dashboard" },
+      { href: "/patient/status",    icon: "activity",  label: "Blood Status" },
     ],
   },
 ];

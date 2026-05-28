@@ -7,6 +7,14 @@ import { INDIAN_STATES, DESIGNATION_OPTIONS } from "@/lib/constants";
 
 const STEPS = ["Bank Details", "Location & Contact", "Admin Account", "Submit"];
 
+const OWNERSHIP_OPTIONS = [
+  { value: "GOVERNMENT", label: "Government" },
+  { value: "SEMI_PRIVATE", label: "Semi-Private" },
+  { value: "PRIVATE", label: "Private" },
+  { value: "WELFARE_TRUST", label: "Welfare Trust" },
+  { value: "OTHER", label: "Other" },
+];
+
 export default function BloodBankRegisterPage() {
   const router = useRouter();
   const [step, setStep] = useState(0);
@@ -14,10 +22,10 @@ export default function BloodBankRegisterPage() {
   const [error, setError] = useState("");
   const [form, setForm] = useState({
     bankName: "", registrationNo: "", registrationValidUpto: "",
-    gstNo: "",
+    gstNo: "", ownership: "", hospitalName: "",
     address: "", city: "", district: "", state: "", pincode: "",
     contactMobile: "", bankEmail: "",
-    bankAccountName: "", bankAccountIFSC: "", bankAccountUPI: "",
+    bankAccountName: "", bankAccountNo: "", bankAccountIFSC: "", bankAccountUPI: "",
     adminName: "", adminDesignation: "Blood Bank Officer", adminMobile: "",
     email: "", password: "", confirmPassword: "",
   });
@@ -27,7 +35,7 @@ export default function BloodBankRegisterPage() {
   function validateStep() {
     setError("");
     if (step === 0) {
-      if (!form.bankName || !form.registrationNo || !form.registrationValidUpto) {
+      if (!form.bankName || !form.registrationNo || !form.registrationValidUpto || !form.ownership) {
         setError("Please fill all required fields"); return false;
       }
     }
@@ -56,6 +64,8 @@ export default function BloodBankRegisterPage() {
         registrationNo: form.registrationNo,
         registrationValidUpto: new Date(form.registrationValidUpto).toISOString(),
         gstNo: form.gstNo || undefined,
+        ownership: form.ownership,
+        hospitalName: form.hospitalName || undefined,
         address: form.address,
         city: form.city,
         district: form.district,
@@ -63,6 +73,10 @@ export default function BloodBankRegisterPage() {
         pincode: form.pincode,
         contactMobile: form.contactMobile,
         bankEmail: form.bankEmail,
+        bankAccountName: form.bankAccountName || undefined,
+        bankAccountNo: form.bankAccountNo || undefined,
+        bankAccountIFSC: form.bankAccountIFSC || undefined,
+        bankAccountUPI: form.bankAccountUPI || undefined,
         adminName: form.adminName,
         adminDesignation: form.adminDesignation,
         adminMobile: form.adminMobile,
@@ -112,11 +126,24 @@ export default function BloodBankRegisterPage() {
             </div>
           )}
 
+          {/* Step 0 — Bank Details */}
           {step === 0 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div>
                 <label className="form-label">Blood Bank / Hospital Name *</label>
                 <input className="form-input" value={form.bankName} onChange={e => set("bankName", e.target.value)} placeholder="Official registered name" />
+              </div>
+              <div>
+                <label className="form-label">Ownership Type *</label>
+                <select className="form-input" value={form.ownership} onChange={e => set("ownership", e.target.value)}>
+                  <option value="">Select ownership type</option>
+                  {OWNERSHIP_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+                </select>
+                <div style={{ fontSize: 11, color: "var(--color-ink-muted)", marginTop: 4 }}>Used to calculate fees of blood components</div>
+              </div>
+              <div>
+                <label className="form-label">Hospital Name (Optional)</label>
+                <input className="form-input" value={form.hospitalName} onChange={e => set("hospitalName", e.target.value)} placeholder="Associated hospital name, if any" />
               </div>
               <div>
                 <label className="form-label">License / Registration Number *</label>
@@ -133,6 +160,7 @@ export default function BloodBankRegisterPage() {
             </div>
           )}
 
+          {/* Step 1 — Location & Contact */}
           {step === 1 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div>
@@ -170,15 +198,33 @@ export default function BloodBankRegisterPage() {
                 <label className="form-label">Blood Bank Email *</label>
                 <input className="form-input" type="email" value={form.bankEmail} onChange={e => set("bankEmail", e.target.value)} placeholder="Official blood bank email" />
               </div>
-              <div style={{ fontSize: 12, color: "var(--color-ink-muted)", paddingTop: 4 }}>Bank Account (optional — for financial transactions)</div>
+
+              {/* Payment Details */}
+              <div style={{ fontSize: 12, color: "var(--color-ink-muted)", paddingTop: 4, fontWeight: 600 }}>Payment Details (for financial transactions)</div>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                <input className="form-input" value={form.bankAccountName} onChange={e => set("bankAccountName", e.target.value)} placeholder="Account holder name" />
-                <input className="form-input" value={form.bankAccountIFSC} onChange={e => set("bankAccountIFSC", e.target.value)} placeholder="IFSC code" />
-                <input className="form-input" value={form.bankAccountUPI} onChange={e => set("bankAccountUPI", e.target.value)} placeholder="UPI ID" />
+                <div>
+                  <label className="form-label">Name of the Bank</label>
+                  <input className="form-input" value={form.bankAccountName} onChange={e => set("bankAccountName", e.target.value)} placeholder="Account holder / bank name" />
+                </div>
+                <div>
+                  <label className="form-label">Account No.</label>
+                  <input className="form-input" value={form.bankAccountNo} onChange={e => set("bankAccountNo", e.target.value)} placeholder="Bank account number" />
+                </div>
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
+                  <div>
+                    <label className="form-label">IFSC Code</label>
+                    <input className="form-input" value={form.bankAccountIFSC} onChange={e => set("bankAccountIFSC", e.target.value)} placeholder="IFSC code" />
+                  </div>
+                  <div>
+                    <label className="form-label">UPI ID</label>
+                    <input className="form-input" value={form.bankAccountUPI} onChange={e => set("bankAccountUPI", e.target.value)} placeholder="UPI ID" />
+                  </div>
+                </div>
               </div>
             </div>
           )}
 
+          {/* Step 2 — Primary Admin Account */}
           {step === 2 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
               <div style={{ background: "var(--color-bg)", padding: 12, borderRadius: 6, fontSize: 12, color: "var(--color-ink-muted)" }}>
@@ -215,15 +261,22 @@ export default function BloodBankRegisterPage() {
             </div>
           )}
 
+          {/* Step 3 — Review & Submit */}
           {step === 3 && (
             <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
               <div style={{ fontSize: 15, fontWeight: 700, marginBottom: 4 }}>Review &amp; Submit</div>
               {[
                 ["Blood Bank", form.bankName],
+                ["Ownership", OWNERSHIP_OPTIONS.find(o => o.value === form.ownership)?.label || "—"],
+                ["Hospital Name", form.hospitalName || "—"],
                 ["License No.", form.registrationNo],
+                ["GST No.", form.gstNo || "—"],
                 ["City", `${form.city}, ${form.district}, ${form.state}`],
-                ["Contact", form.contactMobile],
+                ["Contact Mobile", form.contactMobile],
                 ["Bank Email", form.bankEmail],
+                ["Account No.", form.bankAccountNo || "—"],
+                ["IFSC", form.bankAccountIFSC || "—"],
+                ["UPI ID", form.bankAccountUPI || "—"],
                 ["Admin", `${form.adminName} (${form.adminDesignation})`],
                 ["Login Email", form.email],
               ].map(([label, val]) => (

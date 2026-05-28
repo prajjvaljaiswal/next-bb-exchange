@@ -1,12 +1,29 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { apiGet } from "@/lib/api";
+import { apiGet, apiPost } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 import Badge from "@/components/ui/Badge";
 import BloodTag from "@/components/ui/BloodTag";
+import Modal from "@/components/ui/Modal";
+import { BLOOD_GROUPS, INDIAN_STATES } from "@/lib/constants";
 
 const STATUS_COLOR = { PENDING_PAYMENT: "warning", ACTIVE: "success", FULFILLED: "info", EXPIRED: "danger" };
+
+const HOSPITAL_TYPES = [
+  { value: "GOVERNMENT", label: "Government" },
+  { value: "PRIVATE", label: "Private" },
+];
+
+const EMPTY_FORM = {
+  name: "", age: "", sex: "Male", bloodGroup: "O+", unitsRequired: "1",
+  disease: "",
+  address: "", district: "", state: "", nationality: "Indian",
+  hospitalName: "", hospitalType: "PRIVATE", doctorName: "",
+  contactPerson1: "", contactPerson2: "", contactPerson3: "",
+  mobile: "", email: "",
+  bankAccountName: "", bankAccountNo: "", bankAccountIFSC: "", bankAccountUPI: "",
+};
 
 export default function PatientsPage() {
   const { user, accessToken } = useAuth();
@@ -14,6 +31,9 @@ export default function PatientsPage() {
   const [patients, setPatients] = useState([]);
   const [loading, setLoading] = useState(true);
   const [filterStatus, setFilterStatus] = useState("");
+  const [showModal, setShowModal] = useState(false);
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [saving, setSaving] = useState(false);
 
   const bankId = user?.bloodBankId;
 
@@ -33,6 +53,49 @@ export default function PatientsPage() {
 
   useEffect(() => { fetchPatients(); }, [fetchPatients]);
 
+  function setField(field, value) { setForm(prev => ({ ...prev, [field]: value })); }
+
+  async function handleCreate() {
+    if (!form.name || !form.age || !form.bloodGroup || !form.address || !form.district || !form.state || !form.hospitalName || !form.hospitalType || !form.mobile) {
+      toast.error("Fill all required fields"); return;
+    }
+    setSaving(true);
+    try {
+      await apiPost("/patients", {
+        name: form.name,
+        age: parseInt(form.age),
+        sex: form.sex,
+        bloodGroup: form.bloodGroup,
+        unitsRequired: parseInt(form.unitsRequired) || 1,
+        disease: form.disease || undefined,
+        address: form.address,
+        district: form.district,
+        state: form.state,
+        nationality: form.nationality || undefined,
+        hospitalName: form.hospitalName,
+        hospitalType: form.hospitalType || undefined,
+        doctorName: form.doctorName || undefined,
+        contactPerson1: form.contactPerson1 || undefined,
+        contactPerson2: form.contactPerson2 || undefined,
+        contactPerson3: form.contactPerson3 || undefined,
+        mobile: form.mobile,
+        email: form.email || undefined,
+        bankAccountName: form.bankAccountName || undefined,
+        bankAccountNo: form.bankAccountNo || undefined,
+        bankAccountIFSC: form.bankAccountIFSC || undefined,
+        bankAccountUPI: form.bankAccountUPI || undefined,
+      }, { token: accessToken });
+      toast.success("Patient registered. Login credentials sent to patient email.");
+      setShowModal(false);
+      setForm(EMPTY_FORM);
+      fetchPatients();
+    } catch (err) {
+      toast.error(err.message || "Failed to register patient");
+    } finally {
+      setSaving(false);
+    }
+  }
+
   return (
     <>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
@@ -40,7 +103,7 @@ export default function PatientsPage() {
           <h2 style={{ margin: 0, fontSize: 20, fontWeight: 700 }}>Patients</h2>
           <p style={{ margin: "4px 0 0", color: "var(--color-ink-muted)", fontSize: 13 }}>Patients registered with this blood bank</p>
         </div>
-        <div style={{ fontSize: 13, color: "var(--color-ink-muted)" }}>{patients.length} patients</div>
+        <button className="btn btn-primary" onClick={() => setShowModal(true)}>+ Register New Patient</button>
       </div>
 
       <div className="panel">
@@ -65,7 +128,8 @@ export default function PatientsPage() {
                 <th>Blood Group</th>
                 <th>Units</th>
                 <th>Hospital</th>
-                <th>Doctor</th>
+                <th>Address / State</th>
+                <th>Contact</th>
                 <th>Status</th>
                 <th>Registered</th>
               </tr>
@@ -77,8 +141,11 @@ export default function PatientsPage() {
                   <td style={{ fontWeight: 600 }}>{p.name}</td>
                   <td><BloodTag group={p.bloodGroup} /></td>
                   <td style={{ textAlign: "center" }}>{p.unitsRequired}</td>
-                  <td style={{ fontSize: 13 }}>{p.hospitalName}</td>
-                  <td style={{ fontSize: 13 }}>{p.doctorName}</td>
+                  <td style={{ fontSize: 13 }}>{p.hospitalName}{p.hospitalType ? ` (${p.hospitalType === "GOVERNMENT" ? "Govt" : "Pvt"})` : ""}</td>
+                  <td style={{ fontSize: 12, color: "var(--color-ink-muted)" }}>
+                    {[p.district, p.state].filter(Boolean).join(", ") || "—"}
+                  </td>
+                  <td style={{ fontSize: 13 }}>{p.mobile || "—"}</td>
                   <td><Badge status={STATUS_COLOR[p.status] || "info"}>{p.status}</Badge></td>
                   <td style={{ fontSize: 13 }}>{new Date(p.createdAt).toLocaleDateString("en-IN")}</td>
                 </tr>
@@ -87,6 +154,131 @@ export default function PatientsPage() {
           </table>
         )}
       </div>
+
+      {/* Register New Patient Modal */}
+      <Modal open={showModal} onClose={() => { setShowModal(false); setForm(EMPTY_FORM); }} title="Register New Patient">
+        <div style={{ display: "flex", flexDirection: "column", gap: 12, maxHeight: "60vh", overflowY: "auto", paddingRight: 4 }}>
+
+          <div style={{ fontWeight: 600, fontSize: 13, color: "var(--color-ink-muted)", borderBottom: "1px solid var(--color-border)", paddingBottom: 6 }}>Patient Details</div>
+          <div>
+            <label className="form-label">Full Name *</label>
+            <input className="form-input" value={form.name} onChange={e => setField("name", e.target.value)} />
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+            <div>
+              <label className="form-label">Age *</label>
+              <input className="form-input" type="number" min="0" value={form.age} onChange={e => setField("age", e.target.value)} />
+            </div>
+            <div>
+              <label className="form-label">Sex *</label>
+              <select className="form-input" value={form.sex} onChange={e => setField("sex", e.target.value)}>
+                <option>Male</option><option>Female</option><option>Other</option>
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Units *</label>
+              <input className="form-input" type="number" min="1" value={form.unitsRequired} onChange={e => setField("unitsRequired", e.target.value)} />
+            </div>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div>
+              <label className="form-label">Blood Group *</label>
+              <select className="form-input" value={form.bloodGroup} onChange={e => setField("bloodGroup", e.target.value)}>
+                {BLOOD_GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Disease (Optional)</label>
+              <input className="form-input" value={form.disease} onChange={e => setField("disease", e.target.value)} />
+            </div>
+          </div>
+
+          <div style={{ fontWeight: 600, fontSize: 13, color: "var(--color-ink-muted)", borderBottom: "1px solid var(--color-border)", paddingBottom: 6, marginTop: 4 }}>Address</div>
+          <div>
+            <label className="form-label">Address *</label>
+            <textarea className="form-input" rows={2} value={form.address} onChange={e => setField("address", e.target.value)} style={{ resize: "vertical" }} />
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div>
+              <label className="form-label">District *</label>
+              <input className="form-input" value={form.district} onChange={e => setField("district", e.target.value)} />
+            </div>
+            <div>
+              <label className="form-label">State/UT *</label>
+              <select className="form-input" value={form.state} onChange={e => setField("state", e.target.value)}>
+                <option value="">Select</option>
+                {INDIAN_STATES.map(s => <option key={s} value={s}>{s}</option>)}
+              </select>
+            </div>
+          </div>
+
+          <div style={{ fontWeight: 600, fontSize: 13, color: "var(--color-ink-muted)", borderBottom: "1px solid var(--color-border)", paddingBottom: 6, marginTop: 4 }}>Hospital</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div>
+              <label className="form-label">Hospital Name *</label>
+              <input className="form-input" value={form.hospitalName} onChange={e => setField("hospitalName", e.target.value)} />
+            </div>
+            <div>
+              <label className="form-label">Hospital Type *</label>
+              <select className="form-input" value={form.hospitalType} onChange={e => setField("hospitalType", e.target.value)}>
+                {HOSPITAL_TYPES.map(t => <option key={t.value} value={t.value}>{t.label}</option>)}
+              </select>
+            </div>
+          </div>
+          <div>
+            <label className="form-label">Doctor's Name (Optional)</label>
+            <input className="form-input" value={form.doctorName} onChange={e => setField("doctorName", e.target.value)} />
+          </div>
+
+          <div style={{ fontWeight: 600, fontSize: 13, color: "var(--color-ink-muted)", borderBottom: "1px solid var(--color-border)", paddingBottom: 6, marginTop: 4 }}>Contact</div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div>
+              <label className="form-label">Mobile No. *</label>
+              <input className="form-input" value={form.mobile} onChange={e => setField("mobile", e.target.value)} maxLength={10} />
+            </div>
+            <div>
+              <label className="form-label">Email (Optional)</label>
+              <input className="form-input" type="email" value={form.email} onChange={e => setField("email", e.target.value)} placeholder="For login credentials" />
+            </div>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {["contactPerson1","contactPerson2","contactPerson3"].map((f, i) => (
+              <input key={f} className="form-input" value={form[f]} onChange={e => setField(f, e.target.value)} placeholder={`Emergency contact ${i+1}`} />
+            ))}
+          </div>
+
+          <div style={{ fontWeight: 600, fontSize: 13, color: "var(--color-ink-muted)", borderBottom: "1px solid var(--color-border)", paddingBottom: 6, marginTop: 4 }}>Payment / Refund Details (Optional)</div>
+          <div>
+            <label className="form-label">Name of Bank</label>
+            <input className="form-input" value={form.bankAccountName} onChange={e => setField("bankAccountName", e.target.value)} />
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 10 }}>
+            <div>
+              <label className="form-label">Account No.</label>
+              <input className="form-input" value={form.bankAccountNo} onChange={e => setField("bankAccountNo", e.target.value)} />
+            </div>
+            <div>
+              <label className="form-label">IFSC</label>
+              <input className="form-input" value={form.bankAccountIFSC} onChange={e => setField("bankAccountIFSC", e.target.value)} />
+            </div>
+            <div>
+              <label className="form-label">UPI ID</label>
+              <input className="form-input" value={form.bankAccountUPI} onChange={e => setField("bankAccountUPI", e.target.value)} />
+            </div>
+          </div>
+
+          <p style={{ fontSize: 12, color: "var(--color-ink-muted)", margin: "4px 0 0" }}>
+            Patient will be notified via email with their Patient ID and login credentials if email is provided. Registration fee of ₹100 must be paid to activate the request.
+          </p>
+        </div>
+
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <button className="btn btn-ghost" onClick={() => { setShowModal(false); setForm(EMPTY_FORM); }}>Cancel</button>
+          <button className="btn btn-primary" disabled={saving} onClick={handleCreate}>
+            {saving ? "Registering..." : "Register Patient"}
+          </button>
+        </div>
+      </Modal>
     </>
   );
 }

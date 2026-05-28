@@ -1,97 +1,112 @@
 @import "tailwindcss";
 
 /* ============================================================
-   BLOODEXCHANGE.IN — Design System Tokens
-   Extracted from bbg_dashboard.html, bloodbankgroup_app.html,
-   bbg_admin_cru.html
+   BLOODEXCHANGE.IN — Design System
    ============================================================ */
 
 :root {
   /* Brand */
   --color-blood:        #B91C1C;
   --color-blood-deep:   #7F1D1D;
-  --color-blood-light:  #FEE2E2;
+  --color-blood-light:  #FEF2F2;
+  --color-blood-subtle: #FFE4E6;
   --color-blood-mid:    #DC2626;
 
-  /* Backgrounds — Light theme (bloodbankgroup_app.html) */
-  --color-bg:           #F7F4EF;
+  /* Backgrounds */
+  --color-bg:           #F8F6F3;
   --color-surface:      #FFFFFF;
-  --color-surface-alt:  #EFECE5;
-  --color-border:       #E2DDD6;
+  --color-surface-alt:  #F2EFE9;
+  --color-border:       #E6E1DA;
+  --color-border-light: #EEE9E2;
 
-  /* Text — Light theme */
-  --color-ink:          #1A1614;
-  --color-ink-muted:    #6B6460;
-  --color-ink-faint:    #A09890;
+  /* Text */
+  --color-ink:          #1A1512;
+  --color-ink-muted:    #706860;
+  --color-ink-faint:    #A89F97;
 
-  /* Sidebar — Dark (from bloodbankgroup_app.html) */
-  --color-sidebar-bg:   #0D0D0D;
-  --color-sidebar-border: #1F1F1F;
-  --color-sidebar-text: #E8E4DF;
-  --color-sidebar-muted: #6B6460;
+  /* Sidebar */
+  --color-sidebar-bg:     #0F0E0C;
+  --color-sidebar-border: #1E1C1A;
+  --color-sidebar-text:   #F0EDE8;
+  --color-sidebar-muted:  #6B6460;
 
-  /* Dashboard Dark theme (bbg_dashboard.html) */
+  /* Dashboard dark */
   --color-dash-bg:      #0E0F11;
   --color-dash-surface: #161920;
   --color-dash-border:  #2A2F3A;
   --color-dash-text:    #E8EAF0;
   --color-dash-muted:   #6B7280;
 
-  /* Status colours */
-  --color-success:      #1A7A4A;
-  --color-success-bg:   #DCFCE7;
-  --color-warning:      #B7700D;
-  --color-warning-bg:   #FEF3C7;
-  --color-danger:       #B91C1C;
-  --color-danger-bg:    #FEE2E2;
-  --color-info:         #1D4ED8;
-  --color-info-bg:      #DBEAFE;
+  /* Status */
+  --color-success:        #15803D;
+  --color-success-bg:     #F0FDF4;
+  --color-success-border: #BBF7D0;
+  --color-warning:        #B45309;
+  --color-warning-bg:     #FFFBEB;
+  --color-warning-border: #FDE68A;
+  --color-danger:         #B91C1C;
+  --color-danger-bg:      #FEF2F2;
+  --color-danger-border:  #FECACA;
+  --color-info:           #1D4ED8;
+  --color-info-bg:        #EFF6FF;
+  --color-info-border:    #BFDBFE;
 
-  /* Stat card accent colours */
-  --color-stat-red:     #B91C1C;
-  --color-stat-green:   #15803D;
-  --color-stat-orange:  #C2410C;
-  --color-stat-blue:    #1D4ED8;
+  /* Stat accent colours */
+  --color-stat-red:    #B91C1C;
+  --color-stat-green:  #15803D;
+  --color-stat-orange: #C2410C;
+  --color-stat-blue:   #1D4ED8;
+
+  /* Shadows */
+  --shadow-xs: 0 1px 2px rgba(0,0,0,0.05);
+  --shadow-sm: 0 1px 4px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 28px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.04);
+  --shadow-xl: 0 20px 56px rgba(0,0,0,0.14), 0 8px 16px rgba(0,0,0,0.06);
 
   /* Typography */
-  --font-display:       'DM Serif Display', 'Instrument Serif', Georgia, serif;
-  --font-body:          'DM Sans', 'Outfit', system-ui, sans-serif;
-  --font-mono:          'JetBrains Mono', 'Geist Mono', monospace;
+  --font-display: var(--font-dm-serif, 'Georgia', serif);
+  --font-body:    var(--font-geist-sans, system-ui, sans-serif);
+  --font-mono:    var(--font-geist-mono, 'JetBrains Mono', monospace);
 
-  /* Spacing */
-  --sidebar-width:      260px;
-  --topbar-height:      64px;
-  --border-radius:      8px;
-  --border-radius-lg:   12px;
+  /* Layout */
+  --sidebar-width:   260px;
+  --topbar-height:   60px;
+  --radius:          8px;
+  --radius-lg:       12px;
+  --radius-xl:       16px;
 }
 
 /* ============================================================
    BASE STYLES
    ============================================================ */
 
+*, *::before, *::after { box-sizing: border-box; }
+
 body {
   background-color: var(--color-bg);
   color: var(--color-ink);
   font-family: var(--font-body);
+  font-size: 14px;
+  line-height: 1.5;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Monospace utility */
-.font-mono { font-family: var(--font-mono); }
+.font-mono    { font-family: var(--font-mono); }
 .font-display { font-family: var(--font-display); }
 
 /* ============================================================
    SCROLLBAR
    ============================================================ */
 
-::-webkit-scrollbar { width: 6px; height: 6px; }
-::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: var(--color-ink-faint); }
+::-webkit-scrollbar            { width: 5px; height: 5px; }
+::-webkit-scrollbar-track      { background: transparent; }
+::-webkit-scrollbar-thumb      { background: var(--color-border); border-radius: 10px; }
+::-webkit-scrollbar-thumb:hover{ background: var(--color-ink-faint); }
 
 /* ============================================================
-   PLATFORM SHELL — Layout
+   LAYOUT SHELL
    ============================================================ */
 
 .platform-shell {
@@ -105,11 +120,12 @@ body {
   background: var(--color-sidebar-bg);
   border-right: 1px solid var(--color-sidebar-border);
   position: fixed;
-  top: 0;
-  left: 0;
+  top: 0; left: 0;
   height: 100vh;
   overflow-y: auto;
   z-index: 40;
+  display: flex;
+  flex-direction: column;
 }
 
 .platform-main {
@@ -131,62 +147,85 @@ body {
   align-items: center;
   padding: 0 24px;
   gap: 16px;
+  box-shadow: var(--shadow-xs);
 }
 
 .platform-content {
   flex: 1;
-  padding: 24px;
+  padding: 28px 28px;
 }
 
-/* Dashboard dark variant */
+/* Dark dashboard variant */
 .platform-shell.dark-theme {
   background: var(--color-dash-bg);
   color: var(--color-dash-text);
 }
-.platform-shell.dark-theme .platform-main { background: var(--color-dash-bg); }
-.platform-shell.dark-theme .platform-topbar {
+.platform-shell.dark-theme .platform-main    { background: var(--color-dash-bg); }
+.platform-shell.dark-theme .platform-topbar  {
   background: var(--color-dash-surface);
   border-color: var(--color-dash-border);
   color: var(--color-dash-text);
 }
 
 /* ============================================================
-   SIDEBAR NAV ITEMS
+   SIDEBAR NAV
    ============================================================ */
+
+.nav-section-label {
+  padding: 8px 20px 4px;
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--color-sidebar-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.10em;
+}
 
 .nav-item {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
-  border-radius: var(--border-radius);
+  padding: 9px 14px;
+  border-radius: var(--radius);
   color: var(--color-sidebar-muted);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: background 0.15s ease, color 0.15s ease;
   text-decoration: none;
-  margin: 2px 8px;
+  margin: 1px 8px;
 }
 
 .nav-item:hover {
-  background: rgba(255,255,255,0.06);
+  background: rgba(255,255,255,0.07);
   color: var(--color-sidebar-text);
 }
 
 .nav-item.active {
-  background: rgba(185, 28, 28, 0.18);
-  color: var(--color-blood);
+  background: rgba(185, 28, 28, 0.16);
+  color: #F87171;
 }
 
-.nav-item .nav-badge {
+.nav-item.active .nav-icon {
+  color: #F87171;
+}
+
+.nav-icon {
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.nav-item.active .nav-icon { opacity: 1; }
+.nav-item:hover .nav-icon  { opacity: 1; }
+
+.nav-badge {
   margin-left: auto;
   background: var(--color-blood);
   color: #fff;
-  font-size: 11px;
+  font-size: 10px;
   font-family: var(--font-mono);
   padding: 1px 6px;
   border-radius: 10px;
+  font-weight: 700;
 }
 
 /* ============================================================
@@ -196,80 +235,128 @@ body {
 .stat-card {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-lg);
   padding: 20px;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.stat-card:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
 }
 
 .stat-card::before {
   content: '';
   position: absolute;
-  top: 0; left: 0;
-  width: 3px;
-  height: 100%;
+  top: 0; left: 0; right: 0;
+  height: 3px;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
-.stat-card.red::before  { background: var(--color-stat-red); }
-.stat-card.green::before { background: var(--color-stat-green); }
-.stat-card.orange::before { background: var(--color-stat-orange); }
-.stat-card.blue::before  { background: var(--color-stat-blue); }
+.stat-card.red::before    { background: linear-gradient(90deg, var(--color-stat-red) 0%, transparent 100%); }
+.stat-card.green::before  { background: linear-gradient(90deg, var(--color-stat-green) 0%, transparent 100%); }
+.stat-card.orange::before { background: linear-gradient(90deg, var(--color-stat-orange) 0%, transparent 100%); }
+.stat-card.blue::before   { background: linear-gradient(90deg, var(--color-stat-blue) 0%, transparent 100%); }
 
 .stat-card .stat-value {
-  font-size: 32px;
-  font-weight: 700;
+  font-size: 30px;
+  font-weight: 800;
   font-family: var(--font-mono);
   line-height: 1;
+  letter-spacing: -0.02em;
 }
 
 .stat-card .stat-label {
-  font-size: 13px;
+  font-size: 12px;
+  font-weight: 600;
   color: var(--color-ink-muted);
   margin-top: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }
 
 .stat-card .stat-delta {
   font-size: 12px;
   font-family: var(--font-mono);
   margin-top: 8px;
+  font-weight: 600;
 }
-
 .stat-card .stat-delta.up   { color: var(--color-success); }
 .stat-card .stat-delta.down { color: var(--color-danger); }
 .stat-card .stat-delta.warn { color: var(--color-warning); }
 
-/* Dark stat card for dashboard */
+/* Dark KPI card (dashboard) */
 .kpi-card {
   background: var(--color-dash-surface);
   border: 1px solid var(--color-dash-border);
-  border-radius: var(--border-radius-lg);
+  border-radius: var(--radius-lg);
   padding: 20px;
+  box-shadow: var(--shadow-sm);
 }
+
+/* ============================================================
+   PANEL / CARD
+   ============================================================ */
+
+.panel {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.panel-header {
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-ink);
+  letter-spacing: -0.01em;
+}
+
+.panel-body { padding: 20px; }
+
+.panel.dark {
+  background: var(--color-dash-surface);
+  border-color: var(--color-dash-border);
+}
+.panel.dark .panel-header { border-color: var(--color-dash-border); }
+.panel.dark .panel-title  { color: var(--color-dash-text); }
 
 /* ============================================================
    INVENTORY BAR
    ============================================================ */
 
 .inventory-bar-track {
-  height: 8px;
+  height: 6px;
   background: var(--color-border);
-  border-radius: 4px;
+  border-radius: 3px;
   overflow: hidden;
 }
 
 .inventory-bar-fill {
   height: 100%;
-  border-radius: 4px;
-  transition: width 0.5s ease;
+  border-radius: 3px;
+  transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
 }
 
-.inventory-bar-fill.ok     { background: var(--color-success); }
-.inventory-bar-fill.low    { background: var(--color-warning); }
+.inventory-bar-fill.ok       { background: var(--color-success); }
+.inventory-bar-fill.low      { background: var(--color-warning); }
 .inventory-bar-fill.critical { background: var(--color-blood); animation: pulse-bar 1.5s infinite; }
 
 @keyframes pulse-bar {
   0%, 100% { opacity: 1; }
-  50%       { opacity: 0.5; }
+  50%       { opacity: 0.45; }
 }
 
 /* ============================================================
@@ -279,30 +366,32 @@ body {
 .badge {
   display: inline-flex;
   align-items: center;
+  gap: 4px;
   padding: 2px 8px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
   font-family: var(--font-mono);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.02em;
+  border: 1px solid transparent;
 }
 
-.badge.active    { background: var(--color-success-bg); color: var(--color-success); }
-.badge.pending   { background: var(--color-warning-bg); color: var(--color-warning); }
-.badge.suspended { background: var(--color-danger-bg);  color: var(--color-danger); }
-.badge.inactive  { background: #F3F4F6; color: #6B7280; }
-.badge.info      { background: var(--color-info-bg); color: var(--color-info); }
+.badge.active    { background: var(--color-success-bg);  color: var(--color-success);  border-color: var(--color-success-border); }
+.badge.pending   { background: var(--color-warning-bg);  color: var(--color-warning);  border-color: var(--color-warning-border); }
+.badge.suspended { background: var(--color-danger-bg);   color: var(--color-danger);   border-color: var(--color-danger-border); }
+.badge.inactive  { background: #F3F4F6; color: #6B7280; border-color: #E5E7EB; }
+.badge.info      { background: var(--color-info-bg);     color: var(--color-info);     border-color: var(--color-info-border); }
 
-/* Blood group badge */
 .blood-tag {
   display: inline-block;
   background: var(--color-blood-light);
   color: var(--color-blood);
   padding: 2px 8px;
-  border-radius: 4px;
+  border-radius: var(--radius);
   font-size: 12px;
   font-weight: 700;
   font-family: var(--font-mono);
+  border: 1px solid #FECACA;
 }
 
 /* ============================================================
@@ -310,28 +399,34 @@ body {
    ============================================================ */
 
 .data-table { width: 100%; border-collapse: collapse; }
+
 .data-table th {
   text-align: left;
-  padding: 10px 12px;
+  padding: 10px 14px;
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.06em;
   color: var(--color-ink-muted);
   border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
 }
+
 .data-table td {
-  padding: 12px;
-  font-size: 14px;
+  padding: 11px 14px;
+  font-size: 13.5px;
   color: var(--color-ink);
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border-light);
+  vertical-align: middle;
 }
-/* Override dark-theme cascade inside white panels */
+
 .panel .data-table td,
 .platform-shell.dark-theme .panel .data-table td {
   color: var(--color-ink);
 }
-.data-table tr:hover td { background: var(--color-bg); }
+
+.data-table tbody tr:hover td { background: var(--color-surface-alt); }
+.data-table tbody tr:last-child td { border-bottom: none; }
 
 /* ============================================================
    BUTTONS
@@ -340,38 +435,64 @@ body {
 .btn {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 6px;
   padding: 8px 16px;
-  border-radius: var(--border-radius);
-  font-size: 14px;
+  border-radius: var(--radius);
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
   border: 1px solid transparent;
   text-decoration: none;
+  white-space: nowrap;
+  font-family: var(--font-body);
+  line-height: 1;
+}
+
+.btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
 }
 
 .btn-primary {
   background: var(--color-blood);
   color: #fff;
   border-color: var(--color-blood);
+  box-shadow: 0 1px 3px rgba(185,28,28,0.25);
 }
-.btn-primary:hover { background: var(--color-blood-deep); }
+.btn-primary:hover:not(:disabled) {
+  background: var(--color-blood-deep);
+  border-color: var(--color-blood-deep);
+  box-shadow: 0 2px 6px rgba(185,28,28,0.3);
+}
 
 .btn-ghost {
   background: transparent;
   color: var(--color-ink-muted);
   border-color: var(--color-border);
 }
-.btn-ghost:hover { background: var(--color-bg); color: var(--color-ink); }
+.btn-ghost:hover:not(:disabled) {
+  background: var(--color-surface-alt);
+  color: var(--color-ink);
+  border-color: #D1CBC2;
+}
 
 .btn-success {
   background: var(--color-success);
   color: #fff;
+  box-shadow: 0 1px 3px rgba(21,128,61,0.25);
 }
-.btn-success:hover { opacity: 0.9; }
+.btn-success:hover:not(:disabled) { opacity: 0.9; }
 
-.btn-sm { padding: 5px 10px; font-size: 12px; }
+.btn-danger {
+  background: var(--color-danger);
+  color: #fff;
+  border-color: var(--color-danger);
+}
+.btn-danger:hover:not(:disabled) { opacity: 0.9; }
+
+.btn-sm { padding: 5px 11px; font-size: 12px; }
 .btn-lg { padding: 12px 24px; font-size: 15px; }
 
 /* ============================================================
@@ -380,63 +501,85 @@ body {
 
 .form-label {
   display: block;
-  font-size: 13px;
+  font-size: 12.5px;
   font-weight: 600;
   color: var(--color-ink);
-  margin-bottom: 6px;
+  margin-bottom: 5px;
+  letter-spacing: 0.01em;
 }
 
 .form-input {
   width: 100%;
-  padding: 10px 12px;
+  padding: 9px 12px;
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
+  border-radius: var(--radius);
   font-size: 14px;
   background: var(--color-surface);
   color: var(--color-ink);
   outline: none;
-  transition: border-color 0.15s;
-  box-sizing: border-box;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease;
+  font-family: var(--font-body);
 }
 
-.form-input:focus { border-color: var(--color-blood); box-shadow: 0 0 0 3px rgba(185,28,28,0.08); }
+.form-input:focus {
+  border-color: var(--color-blood);
+  box-shadow: 0 0 0 3px rgba(185,28,28,0.10);
+}
+
 .form-input::placeholder { color: var(--color-ink-faint); }
+
+.form-input:disabled {
+  background: var(--color-surface-alt);
+  color: var(--color-ink-muted);
+  cursor: not-allowed;
+}
+
+.form-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23706860' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  padding-right: 32px;
+}
 
 .form-error {
   font-size: 12px;
   color: var(--color-danger);
   margin-top: 4px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
 }
 
 /* ============================================================
-   CERT CARD (Donor Certificate)
+   CERT CARD
    ============================================================ */
 
 .cert-card {
-  background: linear-gradient(135deg, #1A0A0A 0%, #2D1515 50%, #1A0A0A 100%);
-  border-radius: 12px;
+  background: linear-gradient(140deg, #1A0A0A 0%, #2D1515 60%, #1A0A0A 100%);
+  border-radius: var(--radius-xl);
   padding: 24px;
   color: #fff;
   width: 340px;
   position: relative;
   overflow: hidden;
+  box-shadow: var(--shadow-lg);
 }
 
 .cert-card::before {
   content: '';
   position: absolute;
-  top: -20px; right: -20px;
-  width: 100px; height: 100px;
-  background: rgba(185,28,28,0.2);
+  top: -30px; right: -30px;
+  width: 120px; height: 120px;
+  background: rgba(185,28,28,0.15);
   border-radius: 50%;
 }
 
 .cert-card .cert-header {
-  font-family: var(--font-display);
-  font-size: 13px;
-  color: rgba(255,255,255,0.6);
+  font-size: 11px;
+  color: rgba(255,255,255,0.5);
   text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.10em;
   margin-bottom: 16px;
 }
 
@@ -444,7 +587,7 @@ body {
   font-family: var(--font-mono);
   font-size: 20px;
   font-weight: 700;
-  color: var(--color-blood);
+  color: #F87171;
 }
 
 .cert-card .cert-name {
@@ -455,9 +598,9 @@ body {
 
 .cert-card .cert-group {
   font-family: var(--font-mono);
-  font-size: 36px;
+  font-size: 40px;
   font-weight: 900;
-  color: var(--color-blood);
+  color: #F87171;
   line-height: 1;
   margin: 12px 0;
 }
@@ -469,34 +612,47 @@ body {
 .modal-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.6);
+  background: rgba(0,0,0,0.55);
   z-index: 50;
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 24px;
+  backdrop-filter: blur(2px);
+  animation: fade-in 0.15s ease;
 }
 
 .modal-box {
   background: var(--color-surface);
-  border-radius: var(--border-radius-lg);
-  padding: 32px;
+  border-radius: var(--radius-xl);
+  padding: 28px 32px;
   max-width: 560px;
   width: 100%;
-  max-height: 90vh;
+  max-height: 88vh;
   overflow-y: auto;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  box-shadow: var(--shadow-xl);
+  animation: modal-up 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fade-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modal-up {
+  from { transform: translateY(16px) scale(0.98); opacity: 0; }
+  to   { transform: translateY(0)    scale(1);    opacity: 1; }
 }
 
 /* ============================================================
    TIMELINE
    ============================================================ */
 
-.timeline { display: flex; flex-direction: column; gap: 0; }
+.timeline { display: flex; flex-direction: column; }
 
 .timeline-item {
   display: flex;
-  gap: 16px;
+  gap: 14px;
   padding-bottom: 20px;
   position: relative;
 }
@@ -504,7 +660,7 @@ body {
 .timeline-item::before {
   content: '';
   position: absolute;
-  left: 14px;
+  left: 13px;
   top: 28px;
   bottom: 0;
   width: 2px;
@@ -514,38 +670,38 @@ body {
 .timeline-item:last-child::before { display: none; }
 
 .timeline-dot {
-  width: 28px;
-  height: 28px;
+  width: 26px;
+  height: 26px;
   border-radius: 50%;
   flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
   border: 2px solid;
 }
 
-.timeline-dot.done    { background: var(--color-success-bg); color: var(--color-success); border-color: var(--color-success); }
-.timeline-dot.active  { background: var(--color-blood-light); color: var(--color-blood); border-color: var(--color-blood); }
+.timeline-dot.done    { background: var(--color-success-bg);  color: var(--color-success); border-color: var(--color-success-border); }
+.timeline-dot.active  { background: var(--color-blood-light);  color: var(--color-blood);   border-color: #FECACA; }
 .timeline-dot.pending { background: #F3F4F6; color: #9CA3AF; border-color: #E5E7EB; }
 
 /* ============================================================
-   LIVE STATUS DOT (Dashboard)
+   LIVE DOT
    ============================================================ */
 
 .live-dot {
-  width: 8px;
-  height: 8px;
+  width: 7px;
+  height: 7px;
   border-radius: 50%;
   background: #22C55E;
-  animation: live-pulse 2s infinite;
   display: inline-block;
+  animation: live-pulse 2.2s ease infinite;
 }
 
 @keyframes live-pulse {
   0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.5; transform: scale(0.8); }
+  50%       { opacity: 0.4; transform: scale(0.75); }
 }
 
 /* ============================================================
@@ -565,14 +721,14 @@ body {
 .toast {
   background: var(--color-surface);
   border: 1px solid var(--color-border);
-  border-radius: var(--border-radius);
-  padding: 14px 18px;
-  box-shadow: 0 4px 16px rgba(0,0,0,0.12);
+  border-radius: var(--radius-lg);
+  padding: 12px 16px;
+  box-shadow: var(--shadow-lg);
   display: flex;
   align-items: flex-start;
-  gap: 12px;
+  gap: 10px;
   max-width: 360px;
-  animation: slide-in 0.2s ease;
+  animation: slide-in 0.22s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .toast.success { border-left: 3px solid var(--color-success); }
@@ -581,89 +737,85 @@ body {
 .toast.info    { border-left: 3px solid var(--color-info); }
 
 @keyframes slide-in {
-  from { transform: translateX(20px); opacity: 0; }
+  from { transform: translateX(24px); opacity: 0; }
   to   { transform: translateX(0);    opacity: 1; }
 }
 
 /* ============================================================
-   PANEL / SECTION CARD
-   ============================================================ */
-
-.panel {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--border-radius-lg);
-  overflow: hidden;
-}
-
-.panel-header {
-  padding: 16px 20px;
-  border-bottom: 1px solid var(--color-border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-.panel-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: var(--color-ink);
-}
-
-.panel-body { padding: 20px; }
-
-/* Dark panel variant */
-.panel.dark {
-  background: var(--color-dash-surface);
-  border-color: var(--color-dash-border);
-}
-
-.panel.dark .panel-header { border-color: var(--color-dash-border); }
-.panel.dark .panel-title  { color: var(--color-dash-text); }
-
-/* ============================================================
-   ACTIVITY FEED DOTS
+   ACTIVITY DOTS
    ============================================================ */
 
 .activity-dot {
-  width: 10px;
-  height: 10px;
+  width: 8px;
+  height: 8px;
   border-radius: 50%;
   flex-shrink: 0;
-  margin-top: 4px;
+  margin-top: 5px;
 }
 
-.activity-dot.ok      { background: #22C55E; }
-.activity-dot.blood   { background: var(--color-blood); }
-.activity-dot.amber   { background: #F59E0B; }
+.activity-dot.ok       { background: #22C55E; }
+.activity-dot.blood    { background: var(--color-blood); }
+.activity-dot.amber    { background: #F59E0B; }
 .activity-dot.sapphire { background: #3B82F6; }
-.activity-dot.violet  { background: #8B5CF6; }
+.activity-dot.violet   { background: #8B5CF6; }
 
 /* ============================================================
-   ADMIN ID CARD PREVIEW (bbg_admin_cru.html)
+   ADMIN ID CARD
    ============================================================ */
 
 .admin-id-card {
   background: linear-gradient(135deg, #1A1614 0%, #2A1F1C 100%);
-  border-radius: 16px;
+  border-radius: var(--radius-xl);
   padding: 28px;
   color: #fff;
   width: 320px;
   aspect-ratio: 1.586;
   position: relative;
   overflow: hidden;
-  box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  box-shadow: var(--shadow-xl);
 }
 
 .admin-id-card::after {
   content: 'BLOODEXCHANGE';
   position: absolute;
-  bottom: 16px;
-  right: 16px;
-  font-size: 10px;
+  bottom: 16px; right: 16px;
+  font-size: 9px;
   font-family: var(--font-mono);
-  letter-spacing: 0.12em;
-  color: rgba(255,255,255,0.15);
+  letter-spacing: 0.14em;
+  color: rgba(255,255,255,0.12);
+}
+
+/* ============================================================
+   SEARCH BAR
+   ============================================================ */
+
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: var(--color-ink-muted);
+  font-size: 13.5px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search-bar:focus-within {
+  border-color: var(--color-blood);
+  box-shadow: 0 0 0 3px rgba(185,28,28,0.08);
+  color: var(--color-ink);
+}
+
+.search-bar input {
+  border: none;
+  outline: none;
+  background: transparent;
+  color: inherit;
+  font-family: var(--font-body);
+  font-size: inherit;
+  width: 100%;
 }
 
 /* ============================================================
@@ -673,7 +825,7 @@ body {
 @media (max-width: 768px) {
   .platform-sidebar {
     transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    transition: transform 0.25s ease;
   }
 
   .platform-sidebar.open {
@@ -682,5 +834,9 @@ body {
 
   .platform-main {
     margin-left: 0;
+  }
+
+  .platform-content {
+    padding: 16px;
   }
 }

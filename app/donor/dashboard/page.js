@@ -77,11 +77,16 @@ export default function DonorDashboard() {
             <div className="panel" style={{ padding: 40, textAlign: "center", color: "var(--color-ink-muted)" }}>Loading...</div>
           ) : latestCard ? (
             <CertCard
-              donorName={latestCard.donorName}
-              bloodGroup={latestCard.bloodGroup}
               donorCardId={latestCard.donorCardDisplayId}
+              donorName={latestCard.donorName}
+              donorDisplayId={latestCard.donorLink?.donor?.donorDisplayId || `D-${(latestCard.donorLink?.donorId || "").slice(0, 8).toUpperCase()}`}
+              bloodGroup={latestCard.bloodGroup}
+              bloodUnitNo={latestCard.bloodUnitNo}
               dateOfCollection={latestCard.dateOfCollection}
-              bloodBankName={latestCard.bloodBankName}
+              bloodBankName={latestCard.bloodBankName || latestCard.bloodBank?.name}
+              bloodBankRegNo={latestCard.bloodBank?.registrationNo}
+              authoritySignature={latestCard.bloodBankAuthoritySignature}
+              organisationOfDrive={latestCard.organisationOfDrive}
               status={latestCard.status}
             />
           ) : (

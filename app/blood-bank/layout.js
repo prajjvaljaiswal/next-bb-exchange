@@ -6,53 +6,54 @@ const NAV = [
   {
     label: "Overview",
     items: [
-      { href: "/blood-bank/dashboard", icon: "📊", label: "Dashboard" },
-      { href: "/blood-bank/admins", icon: "👥", label: "Admins" },
+      { href: "/blood-bank/dashboard", icon: "dashboard", label: "Dashboard" },
+      { href: "/blood-bank/admins",    icon: "users",     label: "Admins" },
     ],
   },
   {
     label: "Blood Management",
     items: [
-      { href: "/blood-bank/inventory/whole-blood", icon: "🧪", label: "Whole Blood" },
-      { href: "/blood-bank/inventory/prbc", icon: "🩸", label: "PRBC Inventory" },
-      { href: "/blood-bank/donations/new", icon: "➕", label: "Log Donation" },
-      { href: "/blood-bank/donations", icon: "📋", label: "Donations" },
-      { href: "/blood-bank/donor-cards", icon: "🪪", label: "Donor Cards" },
+      { href: "/blood-bank/inventory/whole-blood", icon: "beaker",      label: "Whole Blood" },
+      { href: "/blood-bank/inventory/prbc",        icon: "droplet",     label: "PRBC Inventory" },
+      { href: "/blood-bank/donations/new",         icon: "plus-circle", label: "Log Donation" },
+      { href: "/blood-bank/donations",             icon: "clipboard",   label: "Donations" },
+      { href: "/blood-bank/donor-cards",           icon: "id-card",     label: "Donor Cards" },
     ],
   },
   {
-    label: "Patients",
+    label: "People",
     items: [
-      { href: "/blood-bank/patients", icon: "🏥", label: "Patients" },
-      { href: "/blood-bank/recommendation", icon: "🎯", label: "Recommendation" },
+      { href: "/blood-bank/donors",          icon: "user-plus", label: "Donors" },
+      { href: "/blood-bank/patients",        icon: "hospital",  label: "Patients" },
+      { href: "/blood-bank/recommendation",  icon: "target",    label: "Recommendation" },
     ],
   },
   {
     label: "Balance Sheet",
     items: [
-      { href: "/blood-bank/balance-sheet/receivables", icon: "📥", label: "Receivables" },
-      { href: "/blood-bank/balance-sheet/deliverables", icon: "📤", label: "Deliverables" },
+      { href: "/blood-bank/balance-sheet/receivables",  icon: "inbox", label: "Receivables" },
+      { href: "/blood-bank/balance-sheet/deliverables", icon: "send",  label: "Deliverables" },
     ],
   },
   {
     label: "Transfers",
     items: [
-      { href: "/blood-bank/transfers/form-a", icon: "📝", label: "Form A" },
-      { href: "/blood-bank/transfers/form-b", icon: "📦", label: "Form B" },
+      { href: "/blood-bank/transfers/form-a", icon: "file-text", label: "Form A" },
+      { href: "/blood-bank/transfers/form-b", icon: "package",   label: "Form B" },
     ],
   },
   {
     label: "Digital Exchange",
     items: [
-      { href: "/blood-bank/digital-exchange/bilateral", icon: "🔄", label: "Bilateral" },
-      { href: "/blood-bank/digital-exchange/unilateral", icon: "➡️", label: "Unilateral" },
+      { href: "/blood-bank/digital-exchange/bilateral",  icon: "switch",      label: "Bilateral" },
+      { href: "/blood-bank/digital-exchange/unilateral", icon: "arrow-right", label: "Unilateral" },
     ],
   },
   {
     label: "Finance & Reports",
     items: [
-      { href: "/blood-bank/payments", icon: "💳", label: "Payments" },
-      { href: "/blood-bank/reports/donations", icon: "📄", label: "Reports" },
+      { href: "/blood-bank/payments",         icon: "credit-card", label: "Payments" },
+      { href: "/blood-bank/reports/donations", icon: "bar-chart",  label: "Reports" },
     ],
   },
 ];
