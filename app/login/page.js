@@ -69,7 +69,7 @@ function BrandPanel() {
             color: "#F0EDE8",
             letterSpacing: "-0.01em",
           }}>
-            Bloodexchange.in
+            BloodBankGroup.com
           </div>
           <div style={{
             fontSize: 10.5, color: "#F87171",

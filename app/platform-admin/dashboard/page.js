@@ -58,7 +58,7 @@ export default function PlatformAdminDashboard() {
     <>
       <div style={{ marginBottom: 28 }}>
         <h2 style={{ margin: 0, fontSize: 22, fontWeight: 800 }}>Platform Overview</h2>
-        <p style={{ margin: "4px 0 0", color: "var(--color-ink-muted)", fontSize: 13 }}>Bloodexchange.in · India Network</p>
+        <p style={{ margin: "4px 0 0", color: "var(--color-ink-muted)", fontSize: 13 }}>BloodBankGroup.com · India Network</p>
       </div>
 
       {/* KPI Row */}

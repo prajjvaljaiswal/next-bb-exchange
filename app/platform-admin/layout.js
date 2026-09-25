@@ -32,7 +32,7 @@ export default function PlatformAdminLayout({ children }) {
     <div className="platform-shell dark-theme">
       <Sidebar navItems={NAV} />
       <div className="platform-main">
-        <Topbar title="Platform Admin" breadcrumbs={["Bloodexchange.in", "Admin"]} />
+        <Topbar title="Platform Admin" breadcrumbs={["BloodBankGroup.com", "Admin"]} />
         <main className="platform-content">{children}</main>
       </div>
     </div>

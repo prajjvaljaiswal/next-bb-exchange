@@ -228,7 +228,7 @@ export default function DonorRegisterPage() {
                 <input className="form-input" type="password" value={form.confirmPassword} onChange={e => set("confirmPassword", e.target.value)} placeholder="Repeat password" />
               </div>
               <p style={{ fontSize: 12, color: "var(--color-ink-muted)", margin: 0 }}>
-                By registering, you agree to Bloodexchange.in&apos;s terms. A verification email will be sent to <strong>{form.email}</strong>.
+                By registering, you agree to BloodBankGroup.com&apos;s terms. A verification email will be sent to <strong>{form.email}</strong>.
               </p>
             </div>
           )}

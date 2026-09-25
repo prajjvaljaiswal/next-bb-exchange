@@ -136,7 +136,7 @@ export default function LandingPage() {
               color: "var(--color-ink)",
               lineHeight: 1,
             }}>
-              Bloodexchange.in
+              BloodBankGroup.com
             </div>
             <div style={{
               fontSize: 10, color: "var(--color-blood)",
@@ -209,7 +209,7 @@ export default function LandingPage() {
             marginBottom: 36,
             maxWidth: 520,
           }}>
-            Bloodexchange.in connects blood banks, donors, and patients across India.
+            BloodBankGroup.com connects blood banks, donors, and patients across India.
             Our cycle-detection algorithm enables zero-fee exchanges when donation chains form a loop.
           </p>
 
@@ -462,7 +462,7 @@ export default function LandingPage() {
         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
           <BloodDrop size={18} />
           <span style={{ fontSize: 12.5, color: "#6B6460" }}>
-            © 2024 Bloodexchange.in
+            © 2024 BloodBankGroup.com
           </span>
         </div>
         <div style={{ fontSize: 12, color: "#4A4642" }}>

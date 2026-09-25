@@ -17,7 +17,7 @@ export default function CertCard({
   return (
     <div className="cert-card">
       {/* Header */}
-      <div className="cert-header">Bloodexchange.in — Donor Certificate</div>
+      <div className="cert-header">BloodBankGroup.com — Donor Certificate</div>
 
       {/* Card ID */}
       <div className="cert-id" style={{ marginTop: 6 }}>{donorCardId}</div>

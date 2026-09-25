@@ -56,7 +56,7 @@ Required in `.env.local`:
 - `NEXT_PUBLIC_API_URL=http://localhost:5000/api/v1`
 - `NEXT_PUBLIC_SOCKET_URL=http://localhost:5000`
 - `NEXT_PUBLIC_RAZORPAY_KEY_ID=rzp_test_xxxxx`
-- `NEXT_PUBLIC_APP_NAME=Bloodexchange.in`
+- `NEXT_PUBLIC_APP_NAME=BloodBankGroup.com`
 - `NEXT_PUBLIC_DEV_MODE=true` — enables Razorpay mock + DevBanner
 
 ---

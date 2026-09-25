@@ -33,8 +33,8 @@ function PrintView({ patient, onClose }) {
   return (
     <div style={{ fontFamily: "Arial, sans-serif", padding: 32, maxWidth: 700, margin: "0 auto" }}>
       <div style={{ borderBottom: "3px solid #B91C1C", paddingBottom: 12, marginBottom: 20 }}>
-        <div style={{ fontSize: 22, fontWeight: 800, color: "#B91C1C" }}>Bloodexchange.in</div>
-        <div style={{ fontSize: 13, color: "#555" }}>Patient Registration — Bloodexchange.in</div>
+        <div style={{ fontSize: 22, fontWeight: 800, color: "#B91C1C" }}>BloodBankGroup.com</div>
+        <div style={{ fontSize: 13, color: "#555" }}>Patient Registration — BloodBankGroup.com</div>
       </div>
 
       <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Patient Details</div>
@@ -67,7 +67,7 @@ function PrintView({ patient, onClose }) {
       ))}
 
       <div style={{ marginTop: 32, fontSize: 11, color: "#999" }}>
-        Printed from Bloodexchange.in — India&apos;s Paperless Blood Exchange Network
+        Printed from BloodBankGroup.com — India&apos;s Paperless Blood Exchange Network
       </div>
 
       <div style={{ marginTop: 16 }} className="no-print">

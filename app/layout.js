@@ -25,7 +25,7 @@ const dmSerif = DM_Serif_Display({
 });
 
 export const metadata = {
-  title: "Bloodexchange.in — India's Paperless Blood Exchange Network",
+  title: "BloodBankGroup.com — India's Paperless Blood Exchange Network",
   description: "Connect blood banks, donors, and patients across India with our digital blood exchange platform.",
 };
 

@@ -130,7 +130,7 @@ function UserAvatar({ email, role }) {
   );
 }
 
-export default function Sidebar({ navItems, brandTitle = "Bloodexchange.in" }) {
+export default function Sidebar({ navItems, brandTitle = "BloodBankGroup.com" }) {
   const pathname = usePathname();
   const { user } = useAuth();
 

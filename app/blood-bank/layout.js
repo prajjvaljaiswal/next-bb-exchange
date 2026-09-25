@@ -63,7 +63,7 @@ export default function BloodBankLayout({ children }) {
     <div className="platform-shell">
       <Sidebar navItems={NAV} />
       <div className="platform-main">
-        <Topbar title="Blood Bank Portal" breadcrumbs={["Bloodexchange.in", "Blood Bank"]} />
+        <Topbar title="Blood Bank Portal" breadcrumbs={["BloodBankGroup.com", "Blood Bank"]} />
         <main className="platform-content">{children}</main>
       </div>
     </div>

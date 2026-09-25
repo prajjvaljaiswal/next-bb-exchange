@@ -16,7 +16,7 @@ export default function PatientLayout({ children }) {
     <div className="platform-shell">
       <Sidebar navItems={NAV} brandTitle="Patient Portal" />
       <div className="platform-main">
-        <Topbar title="Patient Portal" breadcrumbs={["Bloodexchange.in", "Patient"]} />
+        <Topbar title="Patient Portal" breadcrumbs={["BloodBankGroup.com", "Patient"]} />
         <main className="platform-content">{children}</main>
       </div>
     </div>
