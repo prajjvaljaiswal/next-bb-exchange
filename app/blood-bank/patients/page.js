@@ -1,6 +1,6 @@
 "use client";
 import { useState, useEffect, useCallback } from "react";
-import { apiGet, apiPost } from "@/lib/api";
+import { apiGet, apiPost, apiPatch } from "@/lib/api";
 import { useAuth } from "@/hooks/useAuth";
 import { useToast } from "@/hooks/useToast";
 import Badge from "@/components/ui/Badge";
@@ -25,6 +25,60 @@ const EMPTY_FORM = {
   bankAccountName: "", bankAccountNo: "", bankAccountIFSC: "", bankAccountUPI: "",
 };
 
+function PrintView({ patient, onClose }) {
+  useEffect(() => {
+    window.print();
+  }, []);
+
+  return (
+    <div style={{ fontFamily: "Arial, sans-serif", padding: 32, maxWidth: 700, margin: "0 auto" }}>
+      <div style={{ borderBottom: "3px solid #B91C1C", paddingBottom: 12, marginBottom: 20 }}>
+        <div style={{ fontSize: 22, fontWeight: 800, color: "#B91C1C" }}>Bloodexchange.in</div>
+        <div style={{ fontSize: 13, color: "#555" }}>Patient Registration — Bloodexchange.in</div>
+      </div>
+
+      <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 16 }}>Patient Details</div>
+
+      {[
+        ["Patient ID", patient.patientDisplayId],
+        ["Name", patient.name],
+        ["Age / Sex", `${patient.age} / ${patient.sex}`],
+        ["Blood Group", patient.bloodGroup],
+        ["Units Required", patient.unitsRequired],
+        ["Hospital", `${patient.hospitalName}${patient.hospitalType ? ` (${patient.hospitalType === "GOVERNMENT" ? "Government" : "Private"})` : ""}`],
+        ["Doctor", patient.doctorName || "—"],
+        ["Disease", patient.disease || "—"],
+        ["Address", patient.address || "—"],
+        ["District", patient.district || "—"],
+        ["State", patient.state || "—"],
+        ["Mobile", patient.mobile],
+        ["Email", patient.email || "—"],
+        ["Emergency Contact 1", patient.contactPerson1 || "—"],
+        ["Emergency Contact 2", patient.contactPerson2 || "—"],
+        ["Emergency Contact 3", patient.contactPerson3 || "—"],
+        ["Registered Blood Bank", patient.registeredBloodBank?.name || "—"],
+        ["Status", patient.status],
+        ["Registered On", new Date(patient.createdAt).toLocaleDateString("en-IN")],
+      ].map(([label, value]) => (
+        <div key={label} style={{ display: "flex", borderBottom: "1px solid #eee", padding: "7px 0", fontSize: 14 }}>
+          <div style={{ width: 200, color: "#666", flexShrink: 0 }}>{label}</div>
+          <div style={{ fontWeight: 600 }}>{value}</div>
+        </div>
+      ))}
+
+      <div style={{ marginTop: 32, fontSize: 11, color: "#999" }}>
+        Printed from Bloodexchange.in — India&apos;s Paperless Blood Exchange Network
+      </div>
+
+      <div style={{ marginTop: 16 }} className="no-print">
+        <button onClick={onClose} style={{ padding: "8px 20px", cursor: "pointer" }}>Close Print View</button>
+      </div>
+
+      <style>{`@media print { .no-print { display: none !important; } }`}</style>
+    </div>
+  );
+}
+
 export default function PatientsPage() {
   const { user, accessToken } = useAuth();
   const toast = useToast();
@@ -34,6 +88,14 @@ export default function PatientsPage() {
   const [showModal, setShowModal] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [saving, setSaving] = useState(false);
+
+  // Edit patient state
+  const [editPatient, setEditPatient] = useState(null);
+  const [editForm, setEditForm] = useState({ bloodGroup: "", unitsRequired: "", registeredBloodBankId: "", doctorName: "", disease: "", hospitalName: "" });
+  const [editSaving, setEditSaving] = useState(false);
+
+  // Print state
+  const [printPatient, setPrintPatient] = useState(null);
 
   const bankId = user?.bloodBankId;
 
@@ -96,6 +158,44 @@ export default function PatientsPage() {
     }
   }
 
+  function openEdit(patient) {
+    setEditPatient(patient);
+    setEditForm({
+      bloodGroup: patient.bloodGroup || "",
+      unitsRequired: String(patient.unitsRequired || ""),
+      registeredBloodBankId: patient.registeredBloodBank?.id || "",
+      doctorName: patient.doctorName || "",
+      disease: patient.disease || "",
+      hospitalName: patient.hospitalName || "",
+    });
+  }
+
+  async function handleEdit() {
+    if (!editPatient) return;
+    setEditSaving(true);
+    try {
+      await apiPatch(`/patients/${editPatient.id}`, {
+        bloodGroup: editForm.bloodGroup || undefined,
+        unitsRequired: editForm.unitsRequired ? parseInt(editForm.unitsRequired) : undefined,
+        registeredBloodBankId: editForm.registeredBloodBankId || undefined,
+        doctorName: editForm.doctorName || undefined,
+        disease: editForm.disease || undefined,
+        hospitalName: editForm.hospitalName || undefined,
+      }, { token: accessToken });
+      toast.success("Patient requirement updated");
+      setEditPatient(null);
+      fetchPatients();
+    } catch (err) {
+      toast.error(err.message || "Failed to update patient");
+    } finally {
+      setEditSaving(false);
+    }
+  }
+
+  if (printPatient) {
+    return <PrintView patient={printPatient} onClose={() => setPrintPatient(null)} />;
+  }
+
   return (
     <>
       <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 24 }}>
@@ -132,6 +232,7 @@ export default function PatientsPage() {
                 <th>Contact</th>
                 <th>Status</th>
                 <th>Registered</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -148,6 +249,26 @@ export default function PatientsPage() {
                   <td style={{ fontSize: 13 }}>{p.mobile || "—"}</td>
                   <td><Badge status={STATUS_COLOR[p.status] || "info"}>{p.status}</Badge></td>
                   <td style={{ fontSize: 13 }}>{new Date(p.createdAt).toLocaleDateString("en-IN")}</td>
+                  <td>
+                    <div style={{ display: "flex", gap: 6 }}>
+                      <button
+                        className="btn btn-ghost btn-sm"
+                        style={{ fontSize: 11, padding: "3px 8px" }}
+                        onClick={() => openEdit(p)}
+                        title="Edit requirement"
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="btn btn-ghost btn-sm"
+                        style={{ fontSize: 11, padding: "3px 8px" }}
+                        onClick={() => setPrintPatient(p)}
+                        title="Print patient info"
+                      >
+                        Print
+                      </button>
+                    </div>
+                  </td>
                 </tr>
               ))}
             </tbody>
@@ -226,7 +347,7 @@ export default function PatientsPage() {
             </div>
           </div>
           <div>
-            <label className="form-label">Doctor's Name (Optional)</label>
+            <label className="form-label">Doctor&apos;s Name (Optional)</label>
             <input className="form-input" value={form.doctorName} onChange={e => setField("doctorName", e.target.value)} />
           </div>
 
@@ -276,6 +397,48 @@ export default function PatientsPage() {
           <button className="btn btn-ghost" onClick={() => { setShowModal(false); setForm(EMPTY_FORM); }}>Cancel</button>
           <button className="btn btn-primary" disabled={saving} onClick={handleCreate}>
             {saving ? "Registering..." : "Register Patient"}
+          </button>
+        </div>
+      </Modal>
+
+      {/* Edit Patient Requirement Modal */}
+      <Modal open={!!editPatient} onClose={() => setEditPatient(null)} title="Edit Patient Requirement">
+        <p style={{ fontSize: 13, color: "var(--color-ink-muted)", margin: "0 0 16px" }}>
+          Update blood group, units required, or other details for <strong>{editPatient?.name}</strong> ({editPatient?.patientDisplayId})
+        </p>
+        <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10 }}>
+            <div>
+              <label className="form-label">Blood Group</label>
+              <select className="form-input" value={editForm.bloodGroup} onChange={e => setEditForm(f => ({ ...f, bloodGroup: e.target.value }))}>
+                {BLOOD_GROUPS.map(g => <option key={g} value={g}>{g}</option>)}
+              </select>
+            </div>
+            <div>
+              <label className="form-label">Units Required</label>
+              <input className="form-input" type="number" min="1" value={editForm.unitsRequired} onChange={e => setEditForm(f => ({ ...f, unitsRequired: e.target.value }))} />
+            </div>
+          </div>
+          <div>
+            <label className="form-label">Hospital Name</label>
+            <input className="form-input" value={editForm.hospitalName} onChange={e => setEditForm(f => ({ ...f, hospitalName: e.target.value }))} />
+          </div>
+          <div>
+            <label className="form-label">Doctor&apos;s Name</label>
+            <input className="form-input" value={editForm.doctorName} onChange={e => setEditForm(f => ({ ...f, doctorName: e.target.value }))} />
+          </div>
+          <div>
+            <label className="form-label">Disease / Condition</label>
+            <input className="form-input" value={editForm.disease} onChange={e => setEditForm(f => ({ ...f, disease: e.target.value }))} />
+          </div>
+          <p style={{ fontSize: 12, color: "var(--color-ink-muted)", margin: 0 }}>
+            Updating blood group or units will re-activate the patient&apos;s listing in the search results.
+          </p>
+        </div>
+        <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", marginTop: 16 }}>
+          <button className="btn btn-ghost" onClick={() => setEditPatient(null)}>Cancel</button>
+          <button className="btn btn-primary" disabled={editSaving} onClick={handleEdit}>
+            {editSaving ? "Saving..." : "Save Changes"}
           </button>
         </div>
       </Modal>

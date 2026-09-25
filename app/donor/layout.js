@@ -8,6 +8,7 @@ const NAV = [
       { href: "/donor/dashboard",    icon: "dashboard", label: "Dashboard" },
       { href: "/donor/donor-cards",  icon: "id-card",   label: "My Donor Cards" },
       { href: "/donor/patients",     icon: "search",    label: "Find Patient" },
+      { href: "/donor/blood-banks",  icon: "hospital",  label: "Blood Banks" },
     ],
   },
 ];

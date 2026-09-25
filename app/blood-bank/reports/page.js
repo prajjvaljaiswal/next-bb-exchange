@@ -18,6 +18,7 @@ export default function ReportsPage() {
   const [donationDate, setDonationDate] = useState("");
   const [downloading, setDownloading] = useState(false);
   const [emailing, setEmailing] = useState(false);
+  const [customEmail, setCustomEmail] = useState("");
 
   // Other reports state
   const [dateFrom, setDateFrom] = useState("");
@@ -51,11 +52,17 @@ export default function ReportsPage() {
     }
   }
 
-  async function emailDonationReport() {
+  async function emailDonationReport(toCustomEmail = false) {
     if (!donationDate) { toast.error("Please select a date"); return; }
+    if (toCustomEmail && !customEmail) { toast.error("Please enter an email address"); return; }
     setEmailing(true);
     try {
-      const params = new URLSearchParams({ bloodBankId: bankId, date: donationDate, email: "true" });
+      const params = new URLSearchParams({ bloodBankId: bankId, date: donationDate });
+      if (toCustomEmail && customEmail) {
+        params.set("emailTo", customEmail);
+      } else {
+        params.set("email", "true");
+      }
       const resp = await fetch(`${API_URL}/reports/donations?${params}`, {
         headers: { Authorization: `Bearer ${accessToken}` },
         credentials: "include",
@@ -133,16 +140,38 @@ export default function ReportsPage() {
           <button
             className="btn btn-ghost"
             disabled={emailing || !donationDate}
-            onClick={emailDonationReport}
+            onClick={() => emailDonationReport(false)}
             title={`Email PDF to your registered address (${user?.email || "your email"})`}
           >
             {emailing ? "Sending..." : "Email to Me"}
           </button>
         </div>
 
+        {/* Module 7: "send to self or to anyone a copy through an e-mail id" */}
+        <div style={{ marginTop: 14, display: "flex", gap: 10, alignItems: "flex-end", flexWrap: "wrap" }}>
+          <div style={{ flex: 1, minWidth: 220 }}>
+            <label className="form-label" style={{ display: "block", marginBottom: 4 }}>Send to Any Email Address</label>
+            <input
+              className="form-input"
+              type="email"
+              placeholder="Enter any email address"
+              value={customEmail}
+              onChange={e => setCustomEmail(e.target.value)}
+              style={{ width: "100%" }}
+            />
+          </div>
+          <button
+            className="btn btn-ghost"
+            disabled={emailing || !donationDate || !customEmail}
+            onClick={() => emailDonationReport(true)}
+          >
+            {emailing ? "Sending..." : "Send to This Email"}
+          </button>
+        </div>
+
         {donationDate && (
-          <div style={{ marginTop: 12, fontSize: 12, color: "var(--color-ink-muted)" }}>
-            Report will be sent to your registered email: <strong>{user?.email}</strong>
+          <div style={{ marginTop: 10, fontSize: 12, color: "var(--color-ink-muted)" }}>
+            &quot;Email to Me&quot; sends to your registered address: <strong>{user?.email}</strong>
           </div>
         )}
       </div>
